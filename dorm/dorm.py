@@ -199,7 +199,7 @@ class DORM:
         """
         for col in cols:
             if isinstance(col, str):
-                c, direction = col, ''
+                c, direction = col, 'ASC'
             else:
                 c, direction = col
 
@@ -233,32 +233,32 @@ class DORM:
         q += f'SELECT {select_str} '
 
         # FROM
-        q += f'FROM {self._table} '
+        q += f'FROM {self._table}'
 
         # WHERE
         if self._where:
             where_str = ' AND '.join(self._where)
-            q += f'WHERE {where_str} '
+            q += f' WHERE {where_str}'
 
         # GROUP BY
         if self._group:
             order_str = ', '.join(self._group)
-            q += f'GROUP BY {order_str} '
+            q += f' GROUP BY {order_str}'
 
         # HAVING
         if self._having:
             having_str = ' AND '.join(self._having)
-            q += f'HAVING {having_str} '
+            q += f' HAVING {having_str}'
 
         # ORDER BY
         if self._order:
             order_str = ', '.join('%s %s' % (col, d)
                                   for col, d in self._order.items())
-            q += f'ORDER BY {order_str} '
+            q += f' ORDER BY {order_str}'
 
         # LIMIT
         if self._limit:
-            q += f'LIMIT {self._limit} '
+            q += f' LIMIT {self._limit}'
 
         return q
 
@@ -274,7 +274,7 @@ class DORM:
         """
         return self.run(query=f'PRAGMA table_info({self._table})').vals()
 
-    def run_pandas(self, query: str = None) -> 'pandas.DataFrame':
+    def pandas(self, query: str = None) -> 'pandas.DataFrame':
         """
         Like self.run() but specifically for pandas without duplicating
         any other SQL overhead that self.run() performs.
@@ -288,9 +288,25 @@ class DORM:
         self._close(conn)
         return result
 
+    def first(self, *args, **kwargs):
+        """Shorthand method equivalent to run().first()"""
+        return self.run(*args, **kwargs).first()
+
+    def vals(self, *args, **kwargs):
+        """Shorthand method equivalent to run().vals()"""
+        return self.run(*args, **kwargs).vals()
+
+    def dicts(self, *args, **kwargs):
+        """Shorthand method equivalent to run().dicts()"""
+        return self.run(*args, **kwargs).dicts()
+
+    def groups(self, *args, **kwargs):
+        """Shorthand method equivalent to run().groups()"""
+        return self.run(*args, **kwargs).groups()
+
     def run(self, immediate: bool = None, query: str = None) -> 'Result':
         """
-        Runs query, but does not return the sql results iitself.
+        Runs query, but does not return the sql results itself.
 
         The raw SQL result is wrapped in a Result class for helper functions.
 
@@ -365,6 +381,10 @@ class Result:
         See self._to_dict()
         """
         self._fmt = 'dict'
+        if not self.orm._select or '*' in self.orm._select:
+            found_cols = ', '.join(self.orm._select)
+            raise ValueError('select must be actual columns, '
+                             f'not ({found_cols})')
         return list(self)
 
     def groups(self):
@@ -398,6 +418,8 @@ class Result:
         """
         item_dict = self._to_dict(item)
         key = tuple(item_dict[groupk] for groupk in self.orm._group)
+        if len(self.orm._group) == 1:
+            key = key[0]
         (item_dict.pop(groupk) for groupk in self.orm._group)
         return (key, item_dict)
 
