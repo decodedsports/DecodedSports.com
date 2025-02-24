@@ -1,16 +1,16 @@
-# DecodedSports.com Open Sourced
+# Decoded Source
 
-This is a collection of projects and tools developed by and for DecodedSports.com that we are realising to open source.
+This is a collection of projects and tools developed by and for [DecodedSports.com](https://www.decodedsports.com) that we are releasing to open source.
 
 DecodedSports heavily relies on many incredible open source projects, so the least we can do is give back in a small way. All the tools here, we've custom built in-house to tackle a specific challenge related to sports and data science in some way - with a few one off exceptions.
 
-# The Projects
+# Our Projects
 
-## DORM
+### DORM
 
 [D]ummy ORM is a Python SQLite database Object-relational Mapper (ORM) that implements the simplest, most lightweight, most naive possible ORM for quick and dirty data wrangling.
 
-## MrElo
+### MrElo
 
 MrElo is like scikit-learn but for modeling ratings between competitors. It implements the [Elo rating system](https://en.wikipedia.org/wiki/Elo_rating_system) created by [Mr. Arpad Elo](https://en.wikipedia.org/wiki/Arpad_Elo) in 1960.
 
@@ -18,7 +18,7 @@ Also, included are some non-Elo based rating algorithms.
 
 Code coming Soon!
 
-## OptiMight
+### OptiMight
 
 OptiMight is a mighty Python optimizer that is a wrapper around [scikit-learn](https://scikit-learn.org/stable/) for quickly throwing darts at a wall and seeing what sticks.
 
@@ -29,7 +29,7 @@ It can even be used to optimize MrElo!
 Code Coming Soon!
 
 
-## LimeLight-js
+### LimeLight-js
 
 A JavaScript text search and highlight tool, with emphasis on the <b>highlighting</b> part. Good tools for this are surprisingly hard to come by and all have tricky edge case bugs. LimeLight has found it's day to shine, with far less edge case bugs.
 
