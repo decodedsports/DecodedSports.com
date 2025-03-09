@@ -25,20 +25,20 @@ Basic usage with the all-in-one `calc_elo` function which handles `pre-match elo
 import mrelo
 
 result = mrelo.calc_elo(
-cfg=hyperparams,
-elo_pre1=1250,  # home team
-elo_pre2=1070,  # away team
-mov=(4 - 6)     # home upset
+    cfg=hyperparams,
+    elo_pre1=1250,  # home team
+    elo_pre2=1070,  # away team
+    mov=(4 - 6)     # home upset
 )
 
 print(result)
 """
 (
-1250,  # elo_pre1
-1070,  # elo_pre2
-1235.24,  # elo_post1
-1084.76,  # elo_post2
-0.738  # elo_prob1
+    1250,  # elo_pre1
+    1070,  # elo_pre2
+    1235.24,  # elo_post1
+    1084.76,  # elo_post2
+    0.738  # elo_prob1
 )
 """
 ```
@@ -53,20 +53,20 @@ import mrelo
 from your_custom_code import fetch_data
 
 cols = [
-'fr_team1', 'fr_team2',
-'score1', 'score2',
-'played1', 'played2',
-'rest1', 'rest2',
-'neutral'
+    'fr_team1', 'fr_team2',
+    'score1', 'score2',
+    'played1', 'played2',
+    'rest1', 'rest2',
+    'neutral'
 ]
 data = fetch_data(cols)
 """
 [
-('a', 'b', 4, 6, 0, 0, 1, 1, 0),
-('a', 'c', 8, 3, 1, 0, 1, 1, 0),
-('b', 'c', 4, 2, 1, 1, 1, 1, 0),
-('b', 'a', 1, 3, 2, 2, 1, 1, 0),
-...
+    ('a', 'b', 4, 6, 0, 0, 1, 1, 0),
+    ('a', 'c', 8, 3, 1, 0, 1, 1, 0),
+    ('b', 'c', 4, 2, 1, 1, 1, 1, 0),
+    ('b', 'a', 1, 3, 2, 2, 1, 1, 0),
+    ...
 ]
 """
 
@@ -74,11 +74,11 @@ df = pandas.DataFrame(data, columns=cols)
 hyperparams = mrelo.ga_optimize(df)
 """
 {
-<Params.start: 0>: 1125,
-<Params.elo_avg: 1>: 1300,    
-<Params.revert: 2>: 0.3,
-<Params.hfa_mod: 4>: 21,
-...
+    <Params.start: 0>: 1125,
+    <Params.elo_avg: 1>: 1300,    
+    <Params.revert: 2>: 0.3,
+    <Params.hfa_mod: 4>: 21,
+    ...
 }
 """
 ```
