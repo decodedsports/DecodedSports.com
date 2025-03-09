@@ -14,9 +14,7 @@ DecodedSports heavily relies on many incredible open source projects, so the lea
 
 MrElo is like scikit-learn but for modeling ratings between competitors. It implements the [Elo rating system](https://en.wikipedia.org/wiki/Elo_rating_system) created by [Mr. Arpad Elo](https://en.wikipedia.org/wiki/Arpad_Elo) in 1960.
 
-Also, included are some non-Elo based rating algorithms.
-
-Code coming Soon!
+Future work will include other non-Elo based rating algorithms.
 
 ### OptiMight
 
