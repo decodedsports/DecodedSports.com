@@ -1,7 +1,5 @@
 # MrElo
 
-\*\***CODE COMING SOON**\*\*
-
 <em>This package is an in-house product of [DecodedSports.com](https://www.decodedsports.com).</em>
 
 Named after the one and only [Mr. Elo](https://en.wikipedia.org/wiki/Arpad_Elo) (ELO is not an acronym!!).
@@ -35,42 +33,51 @@ result = mrelo.calc_elo(
 
 print(result)
 """
-{
-    'elo_pre1': 1250,
-    'elo_pre2': 1070,
-    'elo_post1': 1240,
-    'elo_post2': 1079,
-    'elo_prob1': 0.76
-}
+(
+    1250,  # elo_pre1
+    1070,  # elo_pre2
+    1235.24,  # elo_post1
+    1084.76,  # elo_post2
+    0.738  # elo_prob1
+)
 """
 ```
 
 The red herring in the above example is the `hyperparams` variable. You can tune your own like this with a genetic algorithm.
 
 ```python
+import pandas
+
 import mrelo
 
-data = fetch_data()
-print(data)
+from your_custom_code import fetch_data
+
+cols = [
+    'fr_team1', 'fr_team2',
+    'score1', 'score2',
+    'played1', 'played2',
+    'rest1', 'rest2',
+    'neutral'
+]
+data = fetch_data(cols)
 """
 [
-    # team1, team2, score1, score2
-    ('a', 'b', 4, 6),
-    ('a', 'c', 8, 3),
-    ('b', 'c', 4, 2),
-    ('b', 'a', 1, 3),
+    ('a', 'b', 4, 6, 0, 0, 1, 1, 0),
+    ('a', 'c', 8, 3, 1, 0, 1, 1, 0),
+    ('b', 'c', 4, 2, 1, 1, 1, 1, 0),
+    ('b', 'a', 1, 3, 2, 2, 1, 1, 0),
     ...
 ]
 """
 
-hyperparams = mrelo.ga_optimize(data)
-print(hyperparams)
+df = pandas.DataFrame(data, columns=cols)
+hyperparams = mrelo.ga_optimize(df)
 """
 {
-    'starting_elo': 1125,
-    'elo_mean': 1300,    
-    'revert_to_mean': 0.3,
-    'home_field_advantage': 21,
+    <Params.start: 0>: 1125,
+    <Params.elo_avg: 1>: 1300,    
+    <Params.revert: 2>: 0.3,
+    <Params.hfa_mod: 4>: 21,
     ...
 }
 """
