@@ -26,6 +26,8 @@ It can even be used to optimize MrElo!
 
 Code Coming Soon!
 
+### YACA
+[Y]et [A]nother [C]ompression [A]lgorithm is a simple, lightweight, encoding/compression algorithm for very specific use cases where the inputs are integers and the output must be a string restrained to a specific character space (e.g. URI-compatible characters).
 
 ### LimeLight-js
 
@@ -34,7 +36,7 @@ A JavaScript text search and highlight tool, with emphasis on the <b>highlightin
 Code coming Soon!
 
 
-# Projecs Loved by Decoded Sports
+# Projects Loved by Decoded Sports
 
 - <b>Data Science</b>
   - [pandas](https://pandas.pydata.org/)
