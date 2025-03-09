@@ -4,14 +4,14 @@
 
 Named after the one and only [Mr. Elo](https://en.wikipedia.org/wiki/Arpad_Elo) (ELO is not an acronym!!).
 
-This package implements an Elo ratings model, generalizes to any form of A vs. B competitions. MrElo also provides the means to compute the magic values (aka hyperparameters) that are often an enigma in many Elo tutorials.
+This package implements an Elo ratings model, generalized to any form of A vs. B competitions. MrElo also provides the means to compute the hyperparameters (aka magic values) that are often an enigma in most Elo tutorials.
 
 [Read more here](https://www.decodedsports.com/blog/our-elo-model/).
 
 # Features
 
 - Supports any arbitrary competition (sport agnostic) that is A vs. B format.
-- Handles autocorrelation for both winning and Margin of Victory.
+- Handles autocorrelation for both winning likelihood and Margin of Victory.
 - Offers two methods for Margin of Victory autocorrelation handling.
 - Allows for pre-match rating adjustments along with the default post-match adjustments.
 - Allows rating differences to be converted into probabilities.
@@ -25,20 +25,20 @@ Basic usage with the all-in-one `calc_elo` function which handles `pre-match elo
 import mrelo
 
 result = mrelo.calc_elo(
-    cfg=hyperparams,
-    elo_pre1=1250,  # home team
-    elo_pre2=1070,  # away team
-    mov=(4 - 6)     # home upset
+cfg=hyperparams,
+elo_pre1=1250,  # home team
+elo_pre2=1070,  # away team
+mov=(4 - 6)     # home upset
 )
 
 print(result)
 """
 (
-    1250,  # elo_pre1
-    1070,  # elo_pre2
-    1235.24,  # elo_post1
-    1084.76,  # elo_post2
-    0.738  # elo_prob1
+1250,  # elo_pre1
+1070,  # elo_pre2
+1235.24,  # elo_post1
+1084.76,  # elo_post2
+0.738  # elo_prob1
 )
 """
 ```
@@ -53,20 +53,20 @@ import mrelo
 from your_custom_code import fetch_data
 
 cols = [
-    'fr_team1', 'fr_team2',
-    'score1', 'score2',
-    'played1', 'played2',
-    'rest1', 'rest2',
-    'neutral'
+'fr_team1', 'fr_team2',
+'score1', 'score2',
+'played1', 'played2',
+'rest1', 'rest2',
+'neutral'
 ]
 data = fetch_data(cols)
 """
 [
-    ('a', 'b', 4, 6, 0, 0, 1, 1, 0),
-    ('a', 'c', 8, 3, 1, 0, 1, 1, 0),
-    ('b', 'c', 4, 2, 1, 1, 1, 1, 0),
-    ('b', 'a', 1, 3, 2, 2, 1, 1, 0),
-    ...
+('a', 'b', 4, 6, 0, 0, 1, 1, 0),
+('a', 'c', 8, 3, 1, 0, 1, 1, 0),
+('b', 'c', 4, 2, 1, 1, 1, 1, 0),
+('b', 'a', 1, 3, 2, 2, 1, 1, 0),
+...
 ]
 """
 
@@ -74,11 +74,11 @@ df = pandas.DataFrame(data, columns=cols)
 hyperparams = mrelo.ga_optimize(df)
 """
 {
-    <Params.start: 0>: 1125,
-    <Params.elo_avg: 1>: 1300,    
-    <Params.revert: 2>: 0.3,
-    <Params.hfa_mod: 4>: 21,
-    ...
+<Params.start: 0>: 1125,
+<Params.elo_avg: 1>: 1300,    
+<Params.revert: 2>: 0.3,
+<Params.hfa_mod: 4>: 21,
+...
 }
 """
 ```
@@ -105,7 +105,7 @@ Elo is everthing to DecodedSports. It allows us to:
 
 - Rank teams
 - Compute matchup probabilities
-- Incorporate external factors to adjust ratings
+- Incorporate external non-game factors to adjust ratings
 - Determine favorites/underdogs for situational based stats
 
 An Elo rating model is the closest you can get to reproducing Vegas sportsbook odds and thus an extremely powertool for analyzing sports.
@@ -132,7 +132,7 @@ An Elo rating model is the closest you can get to reproducing Vegas sportsbook o
 
 The most mysterious portions of FiveThirtyEight's models (and any Elo tutorial) are the hyperparameters and how they are derived, e.g. why there is a `rest adjustment by 25`, `playoff multiplier of 1.2`, or `home field advantage of 23.6`, etc.
 
-These values will not work in any setting other than the specific implementation they tuned for. Even the simplest Elo implementations will vary enough that new hyperparameters need to be retuned. Just like race cars on a track!
+These values will not work in any setting other than the specific implementation they tuned were for. Even the simplest Elo implementations will vary enough that new hyperparameters need to be retuned. Just like race cars on a track!
 
 Hyperparameters are sometimes called `magic values` for a reason, always be cautious of them and tune them yourself!
 
@@ -140,15 +140,15 @@ We do not provide our internal hyperparameters, but do give you a way to tune yo
 
 ### Autocorrelation
 
-Most Elo implementations differ the most with their handling of autocorrelation. Mr. Elo himself did not incorpoate this into his initial formulas. There are two types that most sports models must account for:
+Most Elo implementations differ the most with their handling of autocorrelation. Mr. Elo himself did not incorpoate this into his original formulas. There are two types that most sports models must account for:
 
-<b>Win Autocorrelation</b>
+- <b>Win Autocorrelation</b>
 
 <i>Those likely to win will keep winning.</i>
 
 MrElo mirrors the default implementation on FiveThirtyEight.
 
-<b>Margin of Victory (MoV) Autocorrelation</b>
+- <b>Margin of Victory (MoV) Autocorrelation</b>
 
 <i>Those likely to win, are more likely to win by a lot.</i>
 
